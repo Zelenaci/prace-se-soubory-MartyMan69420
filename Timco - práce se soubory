@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+############################################################################
+# Soubor:  main.py
+# Datum: 15.11.2021
+# Autor: Martin Timco
+############################################################################
+from random import randint, choice
+
+############################################################################
+
+def prevod():
+  a = soubor.read()
+  a = a.lower()
+  return a
+
+def nahrad():
+
+  znak = input("Zadej znak který si přeješ změnit > ")
+  znak_novy = input("Zadej znak na který si přeješ změnit > ")
+
+  a = soubor.read(1)
+  soubor_novy = ""
+  while(a != ""):
+    if znak == a:
+      soubor_novy += znak_novy 
+    else : 
+      soubor_novy += a
+    a = soubor.read(1)
+  return soubor_novy
+
+
+def stats():
+  seznam = {}
+  soubor_novy = ""
+  a = soubor.read(1) 
+  while(a != ""):
+    if (a in seznam.keys()): 
+      seznam[a] = seznam[a] + 1 
+    else : 
+      seznam[a] = 1 
+
+
+    a = soubor.read(1)
+  for klic in seznam.keys():
+    soubor_novy = soubor_novy + klic + "\t" + str(seznam[klic]) + "\n"
+  return soubor_novy 
+
+
+def text():
+  soubor_novy = ""
+  while True: 
+    a = input("Zadej počet slov > ")
+    if a.isdigit():
+      a = int(a)
+      break
+  while a > 0:
+    soubor_novy = soubor_novy + slovo() + " " 
+    a -= 1 
+
+
+  return soubor_novy [:-1] + "." 
+
+def slovo(maxchars=10):
+
+  souhlasky = "aeiouy"
+  samohlasky = "qwrtpsdfghjkzxcvbnm"
+
+  vysledek = ""
+  zacatek = randint (0,1)
+  for i in range (randint(1,maxchars)):
+    if i % 2 == zacatek : 
+      vysledek += choice(samohlasky)
+    else :
+      vysledek += choice(souhlasky)
+  return vysledek
+
+if __name__ == "__main__":
+  soubor = open(input("Zadej název souboru > "),"r") 
+
+  print("""
+  1) Převod souboru na malá písmena
+  2) Nahraď znak zadaným znakem
+  3) Zobraz statistiku výskytu znaků
+  4) Zadej počet slov pro náhodný text
+  """)
+  while True:
+    volba = input("Zadej svou volbu > ")
+    if volba.isdigit():
+      volba = int(volba)
+      break
+  if volba == 1:
+    novy = prevod()
+  elif volba == 2:
+    novy = nahrad()
+  elif volba == 3:
+    novy = stats()
+  elif volba == 4:
+    novy = text()
+  else : 
+    print ("nic")
+
+  soubor.close()
+
+  soubor = open(input("Zadej název druhého souboru > "),"w")
+  soubor.write(novy) 
+
+  soubor.close()
